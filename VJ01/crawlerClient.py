@@ -30,18 +30,19 @@ def get_source(s,ip,page):
     return response
 
 def get_all_images(response,s,ip):
-    global list_link 
+    global list_link
     beg = 0
     while True:
         beg_str = response.find('href="', beg)   
         if beg_str == -1:
             return list_link  
         end_str = response.find('"', beg_str + 6)      
-        link = response[beg_str + 6:end_str]
-        global j 
+        img = response[beg_str + 6:end_str]
+        global j
         j=j+1
-        if link not in list_link and link.find(".html")!=-1 and link.find("http")==-1:
-            list_link.append(link)
+        if '.html' in img and 'http' not in img:
+            if img not in list_link:
+                list_link.append(img)
         beg = end_str + 1
 
             
