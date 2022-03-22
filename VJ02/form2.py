@@ -1,14 +1,14 @@
-#!E:\Programs\New folder\python.exe
+#!C:\ProgramData\Anaconda3\python.exe
 
 import cgi
 params = cgi.FieldStorage()
 
 pw1 = params.getvalue('password1')
 pw2 = params.getvalue('password2')
+firstname = params.getvalue('firstname')
 
-def validate(pw1 , pw2):
-    if (pw1 != pw2):
-        Location: form1.py
+if (pw1 != pw2):
+    print("Location: form1.py")
 
 print  ("""
 <!DOCTYPE html>
@@ -28,8 +28,9 @@ print  ("""
     <option value="baze_podataka">baze podataka</option>
     <option value="mreze">mreze</option>
     <option value="informacijski_sustavi">informacijski sustavi</option>
-  </select>
-  <br><br>
+  </select>""")
+print ('<input type="hidden" name="firstname" value="' + params.getvalue("firstname") + '">' )
+print("""<br><br>
   <input type="submit" value="Submit">
 </form> 
 

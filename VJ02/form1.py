@@ -1,4 +1,4 @@
-#!E:\Programs\New folder\python.exe
+#!C:\ProgramData\Anaconda3\python.exe
 import cgi
 params = cgi.FieldStorage()
 
