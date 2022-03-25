@@ -1,5 +1,32 @@
 #!E:\Programs\New folder\python.exe
 import subjects
+import cgi
+params = cgi.FieldStorage()
+
+def year(yr):
+    yr= int(yr)
+    print("""
+        <table>
+        <tr>
+            <th>""")
+    for y,r in subjects.year_names.items():
+        if (yr == y):
+            print(r) 
+            print("""</th>
+            <th>Ects</th>
+            <th>Status</th>
+        </tr>
+    """)
+    for i, j in subjects.subjects.items():
+        if j.get("year")==yr:
+            print("<tr>")
+            for x,y in j.items():
+                if (x != "year"):
+                    print("<td>")
+                    print(y)
+                    print("</td>")
+            print("""<td>Not selected<input value="not" type="radio"> Enrolled<input value="enr" type="radio"> Passed<input value="pass" type="radio"></td>""")
+            print("</tr>")
 
 def start_html():
     print("""
@@ -33,10 +60,14 @@ def start_html():
 
 def body():
     print("""
-    <button onclick="year1()">1st Year</button>
-    <button>2nd Year</button>
-    <button>3rd Year</button>
+    <form method="post">
+    <button type="submit" name="yr" value=1>1st Year</button>
+    <button name="yr" value="2">2nd Year</button>
+    <button name="yr" value="3">3rd Year</button>
     """)
+    yr = params.getvalue("yr")
+    if (yr!="None"):
+        year(yr)
 
 
 def end_html():
@@ -44,65 +75,6 @@ def end_html():
     </html>
     """)  
 
-def year1():
-    print("""
-        <table>
-        <tr>
-            <th>1st Year</th>
-            <th>Ects</th>
-            <th>Status</th>
-        </tr>
-    """)
-    for i, j in subjects.subjects.items():
-        if j.get("year")==1:
-            print("<tr>")
-            for x,y in j.items():
-                if (x != "year"):
-                    print("<td>")
-                    print(y)
-                    print("</td>")
-            print("""<td>Not selected<input name="dmt" value="not" type="radio"> Enrolled<input name="dmt" value="enr" type="radio"> Passed<input name="dmt" value="pass" type="radio"></td>""")
-            print("</tr>")
-
-def year2():
-    print("""
-        <table>
-        <tr>
-            <th>2nd Year</th>
-            <th>Ects</th>
-            <th>Status</th>
-        </tr>
-    """)
-    for i, j in subjects.subjects.items():
-        if j.get("year")==2:
-            print("<tr>")
-            for x,y in j.items():
-                if (x != "year"):
-                    print("<td>")
-                    print(y)
-                    print("</td>")
-            print("""<td>Not selected<input name="dmt" value="not" type="radio"> Enrolled<input name="dmt" value="enr" type="radio"> Passed<input name="dmt" value="pass" type="radio"></td>""")
-            print("</tr>")
-
-def year3():
-    print("""
-        <table>
-        <tr>
-            <th>3rd Year</th>
-            <th>Ects</th>
-            <th>Status</th>
-        </tr>
-    """)
-    for i, j in subjects.subjects.items():
-        if j.get("year")==3:
-            print("<tr>")
-            for x,y in j.items():
-                if (x != "year"):
-                    print("<td>")
-                    print(y)
-                    print("</td>")
-            print("""<td>Not selected<input name="dmt" value="not" type="radio"> Enrolled<input name="dmt" value="enr" type="radio"> Passed<input name="dmt" value="pass" type="radio"></td>""")
-            print("</tr>")
 
 start_html()
 body()
