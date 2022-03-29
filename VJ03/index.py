@@ -6,6 +6,13 @@ import os
 params = cgi.FieldStorage()
 from http import cookies
 
+def make_cookie():
+    cookies_string = os.environ.get('HTTP_COOKIE','')
+    cookies_object = cookies.SimpleCookie(cookies_string)
+    cookie = cookies.SimpleCookie()
+    for k in params:
+        cookie[k] = params.getvalue(k)
+        print(cookie.output())
 
 def year(yr):
     yr= int(yr)
@@ -31,10 +38,7 @@ def year(yr):
                     print("</td>")
             print("<td>")
             for s,vel in subjects.status_names.items():
-                if (s == "not"):
-                    print('''<input type="radio" name ="''' + i + '''"value ="''' + s + '''" checked> ''' + vel)
-                else:
-                    print('''<input type="radio" name ="''' + i + '''"value ="''' + s + '''"> ''' + vel)
+                print('''<input type="radio" name ="''' + i + '''"value ="''' + s + '''"> ''' + vel)
             print("</tr>")
 
 
@@ -84,6 +88,8 @@ def end_html():
     print("""</body>
     </html>
     """)
+
+make_cookie()
 
 start_html()
 body()
