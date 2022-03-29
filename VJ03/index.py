@@ -1,7 +1,29 @@
 #!E:\Programs\New folder\python.exe
+import imp
 import subjects
 import cgi
+import os
 params = cgi.FieldStorage()
+from http import cookies
+
+cookies_string = os.environ.get('HTTP_COOKIE', '')
+all_cookies_object = cookies.SimpleCookie(cookies_string)
+
+def make_cookies(params):
+    for key in subjects.subjects:
+        if params.getvalue(key):
+            cookie = cookies.SimpleCookie()
+            cookie[key] = params.getvalue(key)
+            print(cookie.output())
+
+def get_cookies(cookies):
+    dictionary = {}
+    for key in subjects.subjects:
+        if cookies.get(key):
+            dictionary[key] = cookies.get(key).value
+    return dictionary
+
+dicti = get_cookies(all_cookies_object)
 
 def year(yr):
     yr= int(yr)
@@ -25,8 +47,14 @@ def year(yr):
                     print("<td>")
                     print(y)
                     print("</td>")
-            print("""<td>Not selected<input value="not" type="radio"> Enrolled<input value="enr" type="radio"> Passed<input value="pass" type="radio"></td>""")
+            print("<td>")
+            for s,vel in subjects.status_names.items():
+                if(vel in dicti):
+                    print('''<input type="radio" name ="'''+i+'''" + value ="'''+s+'''"> ''' + vel +'checked="checked"')
+                else:
+                    print('''<input type="radio" name ="'''+i+'''" + value ="'''+s+'''"> ''' + vel)
             print("</tr>")
+
 
 def start_html():
     print("""
@@ -73,8 +101,10 @@ def body():
 def end_html():
     print("""</body>
     </html>
-    """)  
+    """)
 
+
+make_cookies(params)
 
 start_html()
 body()
