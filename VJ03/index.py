@@ -1,18 +1,13 @@
 #!python.exe
-import imp
 import subjects
 import cgi
 import os
 params = cgi.FieldStorage()
 from http import cookies
 
-def make_cookie():
-    cookies_string = os.environ.get('HTTP_COOKIE','')
-    cookies_object = cookies.SimpleCookie(cookies_string)
-    cookie = cookies.SimpleCookie()
-    for k in params:
-        cookie[k] = params.getvalue(k)
-        print(cookie.output())
+dict = dict.fromkeys(subjects.subjects)
+for dict_key in subjects.subjects:
+    dict[dict_key] = subjects.cookie2(dict_key, params.getvalue(dict_key))
 
 def year(yr):
     yr= int(yr)
@@ -28,17 +23,20 @@ def year(yr):
             <th>Status</th>
         </tr>
     """)
-    for i, j in subjects.subjects.items():
-        if j.get("year")==yr:
+    for key, value in subjects.subjects.items():
+        if value.get("year")==yr:
             print("<tr>")
-            for x,y in j.items():
+            for x,y in value.items():
                 if (x != "year"):
                     print("<td>")
                     print(y)
                     print("</td>")
             print("<td>")
-            for s,vel in subjects.status_names.items():
-                print('''<input type="radio" name ="''' + i + '''"value ="''' + s + '''"> ''' + vel)
+            for val,valfull in subjects.status_names.items():
+                if dict[key]==val or params.getvalue(key):
+                    print('''<input type="radio" name ="''' + key + '''"value ="''' + val + '''"checked> ''' + valfull)
+                else:
+                    print('''<input type="radio" name ="''' + key + '''"value ="''' + val + '''"> ''' + valfull)
             print("</tr>")
 
 
@@ -89,7 +87,6 @@ def end_html():
     </html>
     """)
 
-make_cookie()
 
 start_html()
 body()
