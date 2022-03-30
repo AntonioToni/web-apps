@@ -1,3 +1,6 @@
+from http import cookies
+import os
+
 subjects = {
     'ip' : { 'name' : 'Introduction to programming' , 'year' : 1, 'ects' : 6 },
     'c1' : { 'name' : 'Calculus 1' , 'year' : 1, 'ects' : 7 },
@@ -30,3 +33,16 @@ status_names = {
     'enr' : 'Enrolled',
     'pass' : 'Passed',
 };
+
+def cookie2(dict_key, value_dict_key=None):
+    cookies_string = os.environ.get('HTTP_COOKIE', '')
+    all_cookies_object = cookies.SimpleCookie(cookies_string)
+    if value_dict_key is not None:
+        cookie = cookies.SimpleCookie()
+        cookie[dict_key] = value_dict_key
+        print(cookie.output())
+    elif all_cookies_object.get(dict_key):
+        value_dict_key = all_cookies_object.get(dict_key).value
+    else:
+        value_dict_key = 'not'
+    return value_dict_key
